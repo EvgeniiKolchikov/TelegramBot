@@ -1,3 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Telegram.Bot;
+using Telegram.Bot.Types;
 
-Console.WriteLine("Hello, World!");
+var botClient = new TelegramBotClient("6175095488:AAEIMOyLHAxnK5VH0IrgOp4BggjijtLs6Gg");
+
+Console.ReadLine();
