@@ -6,38 +6,35 @@ namespace ImpostorHelp;
 
 public class BotController
 {
-    public async Task SendMessage(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    public async Task DialogControl(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         if (update.Message is not { } message) return;
         if (message.Text is not { } messageText) return;
-
-        var chatId = message.Chat.Id;
-        Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
-        var sentMessage = await botClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: "You said:\n" + messageText,
-            cancellationToken: cancellationToken,
-            replyMarkup: GetButtons()
-        );
+        switch (messageText)
+        {
+            case "/start":
+                await StartDialog(botClient, update, cancellationToken);
+                break;
+            default:
+                Console.WriteLine("Default");
+                break;
+        }
     }
 
     public async Task StartDialog(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        if (update.Message is not { } message) return;
-        if (message.Text is not { } messageText) return;
-        if (messageText == "/start")
-        {
-            var startMessage = ConfigurationHelper.GetStringFromConfigurationFile("StartMessage");
-            var chatId = message.Chat.Id;
-            Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
-            
-            var sentMessage = await botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: startMessage,
-                cancellationToken: cancellationToken,
-                replyMarkup: GetButtons()
-            );
-        }
+        var message = update.Message;
+        var messageText = message.Text;
+        var startMessage = ConfigurationHelper.GetStringFromConfigurationFile("StartMessage");
+        var chatId = message.Chat.Id;
+        Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
+        
+        var sentMessage = await botClient.SendTextMessageAsync(
+            chatId: chatId,
+            text: startMessage,
+            cancellationToken: cancellationToken,
+            replyMarkup: GetButtons()
+        );
     }
     private static IReplyMarkup GetButtons()
     {

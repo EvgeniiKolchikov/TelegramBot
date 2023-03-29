@@ -6,7 +6,7 @@ using Telegram.Bot.Types.Enums;
 var botToken = ConfigurationHelper.GetStringFromConfigurationFile("Token");
 var botController = new BotController();
 
-var botClient = new TelegramBotClient(botToken);
+var botClient = new TelegramBotClient(botToken){Timeout = TimeSpan.FromSeconds(10)};
 
 using CancellationTokenSource cts = new();
 
@@ -16,7 +16,7 @@ ReceiverOptions receiverOptions = new()
 };
 
 botClient.StartReceiving(
-    updateHandler: botController.StartDialog,
+    updateHandler: botController.DialogControl,
     pollingErrorHandler: PollingError.PollingErrorHandlerAsync,
     receiverOptions : receiverOptions,
     cancellationToken: cts.Token
