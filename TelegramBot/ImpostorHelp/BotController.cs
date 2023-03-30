@@ -8,32 +8,35 @@ public class BotController
 {
     public async Task DialogControl(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        if (update.Message is not { } message) return;
-        if (message.Text is not { } messageText) return;
-        switch (messageText)
+        var message = update.Message;
+        var messageText = message.Text;
+        if (messageText != null)
         {
-            case "/start":
-                await StartDialog(botClient, update, cancellationToken);
-                break;
-            default:
-                Console.WriteLine("Default");
-                break;
+            switch (messageText)
+            {
+                case "/start":
+                    await StartDialog(botClient, update, cancellationToken);
+                    break;
+                default:
+                    Console.WriteLine("Default");
+                    break;
+            }
         }
+        
     }
 
     public async Task StartDialog(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
+        var fileId = "AwACAgIAAxkBAANmZCXWgD-05V22HwrECYKrZSzVe18AAjEqAAL8FjBJplufDIO5F7gvBA";
         var message = update.Message;
         var messageText = message.Text;
         var startMessage = ConfigurationHelper.GetStringFromConfigurationFile("StartMessage");
         var chatId = message.Chat.Id;
         Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
-        
-        var sentMessage = await botClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: startMessage,
-            cancellationToken: cancellationToken,
-            replyMarkup: GetButtons()
+
+        var sentMessage = await botClient.SendDocumentAsync(
+                chatId: chatId,
+                document: fileId
         );
     }
     private static IReplyMarkup GetButtons()
