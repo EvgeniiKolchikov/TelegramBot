@@ -4,4 +4,6 @@ obj/
 migrations/
 desktop.ini
 appsettings.json
+dialog.json
+Migrations/
 
