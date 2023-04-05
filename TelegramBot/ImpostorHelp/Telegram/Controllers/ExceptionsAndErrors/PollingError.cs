@@ -1,7 +1,7 @@
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 
-namespace ImpostorHelp.Telegram.ExceptionsAndErrors;
+namespace ImpostorHelp.Telegram.Controllers.ExceptionsAndErrors;
 
 public static class PollingError
 {

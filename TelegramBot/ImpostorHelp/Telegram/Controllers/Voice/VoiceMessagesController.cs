@@ -1,9 +1,7 @@
-using System.Net;
 using ImpostorHelp.Repositories;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace ImpostorHelp.Telegram;
+namespace ImpostorHelp.Telegram.Controllers.Voice;
 
 public class VoiceMessagesController
 {
