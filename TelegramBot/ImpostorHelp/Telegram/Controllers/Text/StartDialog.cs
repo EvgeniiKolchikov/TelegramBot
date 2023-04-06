@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using ImpostorHelp.Repositories;
 using ImpostorHelp.Telegram.Models;
+using ImpostorHelp.Telegram.StaticClasses;
 using Newtonsoft.Json.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -12,33 +13,32 @@ namespace ImpostorHelp.Telegram.Controllers.Text;
 public class StartDialog
 {
     private readonly IChatRepository _chatRepository;
+    private readonly IVoiceMessageRepository _voiceMessageRepository;
     private readonly JObject _sentence;
-    private Dictionary<long, UserState> _userStates = new Dictionary<long, UserState>();
-    public StartDialog(JObject sentence)
+
+    public StartDialog(IChatRepository chatRepository, IVoiceMessageRepository voiceMessageRepository)
     {
-        _sentence = sentence;
-        _chatRepository = new ChatRepository();
+        _chatRepository = chatRepository;
+        _voiceMessageRepository = voiceMessageRepository;
     }
     
-    public async Task StartingDialog (ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    public async Task StartingTextDialog (ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        
-        if (update.Type == UpdateType.Message)
-        {
-            var chatId = update.Message.Chat.Id;
-            Console.WriteLine($"Received a '{update.Message.Text}' message in chat {chatId}.");
-            var startMessage = "Добро пожаловать. Стартовое сообщение с описанием и вариантами ответа";
-            await botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: startMessage,
-                cancellationToken: cancellationToken,
-                replyMarkup: firstLevelKeyboard
-            );
-        }
+        var chatId = update.Message.Chat.Id;
+        Console.WriteLine($"Received a '{update.Message.Text}' message in chat {chatId}.");
+        var startMessage = "Добро пожаловать. Стартовое сообщение с описанием и вариантами ответа";
+        await botClient.SendTextMessageAsync(
+            chatId: chatId,
+            text: startMessage,
+            cancellationToken: cancellationToken,
+            replyMarkup: StartDialogKeyboards.FirstLevelKeyboard
+        );
+    }
 
-        if (update.Type == UpdateType.CallbackQuery)
-        {
-            var chatId = update.CallbackQuery.From.Id;
+    public async Task StartingCallBackQueryDialog(ITelegramBotClient botClient, Update update,
+        CancellationToken cancellationToken)
+    {
+        var chatId = update.CallbackQuery.From.Id;
             switch (update.CallbackQuery.Data)
             {
                 case "StartDialog.1Level.Yes":
@@ -47,7 +47,7 @@ public class StartDialog
                         chatId: chatId,
                         text: level1YesMessage,
                         cancellationToken: cancellationToken,
-                        replyMarkup: secondLevelKeyboard
+                        replyMarkup: StartDialogKeyboards.SecondLevelKeyboard
                     );
                     break;
                 case "StartDialog.1Level.No":
@@ -56,7 +56,7 @@ public class StartDialog
                         chatId: chatId,
                         text: level1NoMessage,
                         cancellationToken: cancellationToken,
-                        replyMarkup: secondLevelKeyboard
+                        replyMarkup: StartDialogKeyboards.SecondLevelKeyboard
                     );
                     break;
                 case "StartDialog.2Level.Yes":
@@ -65,7 +65,7 @@ public class StartDialog
                         chatId: chatId,
                         text: level2YesMessage,
                         cancellationToken: cancellationToken,
-                        replyMarkup: thirdLevelKeyboard
+                        replyMarkup: StartDialogKeyboards.ThirdLevelKeyboard
                     );
                     break;
                 case "StartDialog.2Level.No":
@@ -74,7 +74,7 @@ public class StartDialog
                         chatId: chatId,
                         text: level2NoMessage,
                         cancellationToken: cancellationToken,
-                        replyMarkup: thirdLevelKeyboard
+                        replyMarkup: StartDialogKeyboards.ThirdLevelKeyboard
                     );
                     break;
                 case "StartDialog.3Level.Yes":
@@ -83,7 +83,7 @@ public class StartDialog
                         chatId: chatId,
                         text: level3YesMessage,
                         cancellationToken: cancellationToken,
-                        replyMarkup: finalLevelKeyborad
+                        replyMarkup: StartDialogKeyboards.FinalLevelKeyborad
                     );
                     break;
                 case "StartDialog.3Level.No":
@@ -92,46 +92,12 @@ public class StartDialog
                         chatId: chatId,
                         text: level3NoMessage,
                         cancellationToken: cancellationToken,
-                        replyMarkup: finalLevelKeyborad
+                        replyMarkup: StartDialogKeyboards.FinalLevelKeyborad
                     );
                     break;
+                
             }
-        }
     }
 
-    private InlineKeyboardMarkup firstLevelKeyboard = new(new[]
-    {
-        new []
-        {
-            InlineKeyboardButton.WithCallbackData(text: "Да", callbackData: "StartDialog.1Level.Yes"),
-            InlineKeyboardButton.WithCallbackData(text: "Не понял", callbackData: "StartDialog.1Level.No")
-        },
-    });
-    
-    private InlineKeyboardMarkup secondLevelKeyboard = new(new[]
-    {
-        new []
-        {
-            InlineKeyboardButton.WithCallbackData(text: "Да", callbackData: "StartDialog.2Level.Yes"),
-            InlineKeyboardButton.WithCallbackData(text: "Не понял", callbackData: "StartDialog.2Level.No")
-        },
-    });
-    
-    private InlineKeyboardMarkup thirdLevelKeyboard = new(new[]
-    {
-        new []
-        {
-            InlineKeyboardButton.WithCallbackData(text: "Да", callbackData: "StartDialog.3Level.Yes"),
-            InlineKeyboardButton.WithCallbackData(text: "Не понял", callbackData: "StartDialog.3Level.No")
-        },
-    });
-    
-    private InlineKeyboardMarkup finalLevelKeyborad = new(new[]
-    {
-        new []
-        {
-            InlineKeyboardButton.WithCallbackData(text: "Достаточно записей", callbackData: "StartDialog.FinalLevel.Yes"),
-            InlineKeyboardButton.WithCallbackData(text: "Начать заново", callbackData: "StartDialog.1Level.No")
-        },
-    });
+ 
 }

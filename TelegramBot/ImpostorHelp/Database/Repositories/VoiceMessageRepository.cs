@@ -17,16 +17,15 @@ public class VoiceMessageRepository : IVoiceMessageRepository
         var voiceMessage = new VoiceMessage
         {
             ChatId = chatId,
-            VoiceMessageFileId = fileId
+            VoiceMessageFileId = fileId,
+            MessageRecordedTime = DateTime.UtcNow
         };
         await _db.VoiceMessages.AddAsync(voiceMessage);
         await _db.SaveChangesAsync();
     }
-
-    public IEnumerable<VoiceMessage> GetAllChatVoiceMessages(long chatId)
+    public int GetChatVoiceMessagesCount(long chatId)
     {
-       return _db.VoiceMessages.Where(m => m.ChatId == chatId).ToList();
+       return _db.VoiceMessages.Where(m => m.ChatId == chatId).ToList().Count;
     }
-    
-    //public string Get
+
 }

@@ -1,3 +1,4 @@
+using ImpostorHelp.Repositories;
 using ImpostorHelp.Telegram.Controllers.Text;
 using ImpostorHelp.Telegram.Controllers.Voice;
 using Newtonsoft.Json.Linq;
@@ -10,15 +11,19 @@ namespace ImpostorHelp.Telegram.Controllers;
 
 public class BotController
 {
+    private readonly IChatRepository _chatRepository;
+    private readonly IVoiceMessageRepository _voiceMessageRepository;
     private readonly StartDialog _startDialog;
-    private readonly VoiceMessagesController _voiceMessagesController;
+    private readonly VoiceMessagesHandler _voiceMessagesHandler;
     static readonly string JsonPath = Directory.GetCurrentDirectory() + "/dialog.json";
     private readonly JObject _sentence = JObject.Parse(File.ReadAllText(JsonPath));
 
     public BotController()
     {
-        _startDialog = new StartDialog(_sentence);
-        _voiceMessagesController = new VoiceMessagesController();
+        _chatRepository = new ChatRepository();
+        _voiceMessageRepository = new VoiceMessageRepository();
+        _startDialog = new StartDialog(_chatRepository,_voiceMessageRepository);
+        _voiceMessagesHandler = new VoiceMessagesHandler();
     }
 
     public async Task Run(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -26,23 +31,34 @@ public class BotController
         switch (update.Type)
         {
             case UpdateType.Message:
-                var text = update.Message.Text;
-                switch (text)
+                if (update.Message != null && update.Message.Text is not null)
                 {
-                    case "/start":
-                        await _startDialog.StartingDialog(botClient, update, cancellationToken);
-                        break;
-                    
-                    // default:
-                    //     await _startDialog.StartingDialog(botClient, update, cancellationToken);
-                    //     break;
+                    var text = update.Message.Text;
+                    switch (text)
+                    {
+                        case "/start":
+                            await _startDialog.StartingTextDialog(botClient, update, cancellationToken);
+                            break;
+                        
+                        // default:
+                        //     await _startDialog.StartingTextDialog(botClient, update, cancellationToken);
+                        //     break;
+                    }
                 }
-                
+
+                if (update.Message.Voice is not null)
+                {
+                    await _voiceMessagesHandler.AddVoiceToDb(botClient,update,cancellationToken);
+                }
                break;
             
-            case UpdateType.CallbackQuery : 
-                await _startDialog.StartingDialog(botClient, update, cancellationToken);
+            case UpdateType.CallbackQuery :
+                if (update.CallbackQuery.Data.Contains("StartDialog"))
+                {
+                    await _startDialog.StartingCallBackQueryDialog(botClient, update, cancellationToken);
+                }
                 break;
+            
         }
     }
 }
