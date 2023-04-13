@@ -2,9 +2,9 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace ImpostorHelp.Telegram.StaticClasses;
 
-public class StartDialogKeyboards
+public static class StartDialogKeyboards
 {
-    public static InlineKeyboardMarkup FirstLevelKeyboard = new(new[]
+    public static readonly InlineKeyboardMarkup FirstLevelKeyboard = new(new[]
     {
         new []
         {
@@ -37,14 +37,6 @@ public class StartDialogKeyboards
         {
             InlineKeyboardButton.WithCallbackData(text: "Достаточно записей", callbackData: "StartDialog.FinalLevel.Yes"),
             InlineKeyboardButton.WithCallbackData(text: "Начать заново", callbackData: "StartDialog.1Level.No")
-        },
-    });
-    
-    public static InlineKeyboardMarkup AfterAudioRecordKeyboard = new(new[]
-    {
-        new []
-        {
-            InlineKeyboardButton.WithCallbackData(text: "Достаточно записей", callbackData: "StartDialog.EnoughRecords"),
         },
     });
 }

@@ -2,7 +2,7 @@ using ImpostorHelp.Context;
 using ImpostorHelp.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ImpostorHelp.Repositories;
+namespace ImpostorHelp.Database.Repositories;
 
 public class ChatRepository : IChatRepository
 {

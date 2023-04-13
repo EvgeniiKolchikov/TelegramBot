@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Telegram.Bot;
 using ImpostorHelp.Telegram;
-using ImpostorHelp.Telegram.Controllers;
-using ImpostorHelp.Telegram.Controllers.ExceptionsAndErrors;
+using ImpostorHelp.Telegram.ExceptionsAndErrors;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 

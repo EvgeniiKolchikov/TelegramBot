@@ -1,14 +1,9 @@
-using System.Diagnostics;
-using ImpostorHelp.Repositories;
-using ImpostorHelp.Telegram.Models;
 using ImpostorHelp.Telegram.StaticClasses;
 using Newtonsoft.Json.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
-namespace ImpostorHelp.Telegram.Controllers.Text;
+namespace ImpostorHelp.Telegram.Dialogs;
 
 public class StartDialog
 {
@@ -95,7 +90,6 @@ public class StartDialog
                         replyMarkup: StartDialogKeyboards.FinalLevelKeyborad
                     );
                     break;
-                
             }
     }
 
