@@ -4,7 +4,6 @@ namespace ImpostorHelp.Telegram.StaticClasses;
 
 public static class RecordsKeyboard
 {
-        
     public static InlineKeyboardMarkup AfterRecordKeyboard = new(new[]
     {
         new []
