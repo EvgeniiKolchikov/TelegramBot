@@ -15,19 +15,23 @@ public class BotController
     private readonly IChatRepository _chatRepository;
     private readonly IVoiceMessageRepository _voiceMessageRepository;
     private readonly StartDialog _startDialog;
-    private readonly DailyDialog _dailyDialog;
+    private readonly DailyPositiveDialog _dailyPositiveDialog;
+    private readonly DailyNegativeDialog _dailyNegativeDialog;
     private readonly StandardResponse _standardResponse;
     private readonly VoiceMessagesHandler _voiceMessagesHandler;
     private readonly TextMessageHandler _textMessageHandler;
+    private readonly MessagesToStartConversation _messagesToStartConversation;
     public BotController()
     {
         _chatRepository = new ChatRepository();
         _voiceMessageRepository = new VoiceMessageRepository();
         _startDialog = new StartDialog(_chatRepository,_voiceMessageRepository);
-        _dailyDialog = new DailyDialog();
+        _dailyPositiveDialog = new DailyPositiveDialog();
         _standardResponse = new StandardResponse();
         _voiceMessagesHandler = new VoiceMessagesHandler();
         _textMessageHandler = new TextMessageHandler();
+        _messagesToStartConversation = new MessagesToStartConversation();
+        _dailyNegativeDialog = new DailyNegativeDialog();
     }
 
     public async Task Run(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -45,7 +49,7 @@ public class BotController
                             break;
                         
                         case "/daily" :
-                            await _dailyDialog.DailyTextDialog(botClient, update, cancellationToken);
+                            await _messagesToStartConversation.DailyTextDialog(botClient, update, cancellationToken);
                             break;
                         
                         default:
@@ -67,9 +71,14 @@ public class BotController
                     await _startDialog.StartingCallBackQueryDialog(botClient, update, cancellationToken);
                 }
                 if (update.CallbackQuery != null && update.CallbackQuery.Data != null && 
-                    update.CallbackQuery.Data.Contains("DailyDialog"))
+                    update.CallbackQuery.Data.Contains("DailyPositiveDialog"))
                 {
-                    await _dailyDialog.DailyCallBackQueryDialog(botClient, update, cancellationToken);
+                    await _dailyPositiveDialog.DailyPositiveCallBackQueryDialog(botClient, update, cancellationToken);
+                }
+                if (update.CallbackQuery != null && update.CallbackQuery.Data != null && 
+                    update.CallbackQuery.Data.Contains("DailyNegativeDialog"))
+                {
+                    await _dailyNegativeDialog.DailyNegativeCallBackQueryDialog(botClient, update, cancellationToken);
                 }
                 else
                 {
