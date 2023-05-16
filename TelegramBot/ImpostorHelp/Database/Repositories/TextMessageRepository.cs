@@ -17,7 +17,8 @@ public class TextMessageRepository : ITextMessageRepository
         var textMessage = new TextMessage
         {
             ChatId = chatId,
-            Message = text
+            Message = text,
+            DateTime = DateTime.UtcNow + TimeSpan.FromHours(3)
         };
         await _db.TextMessages.AddAsync(textMessage);
         await _db.SaveChangesAsync();

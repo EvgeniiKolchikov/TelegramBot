@@ -3,7 +3,7 @@ using ImpostorHelp.Database.Repositories;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace ImpostorHelp.Telegram.Voice;
+namespace ImpostorHelp.Telegram.Handlers;
 
 public class TextMessageHandler
 {
@@ -23,10 +23,13 @@ public class TextMessageHandler
             {
                 await _textMessageRepository.AddTextMessageToDb(chatId, update.Message.Text);
             }
-            
-            var text = $"Отлично!";
-            await botClient.SendTextMessageAsync(chatId, text, 
-                cancellationToken: cancellationToken);
+
+            await botClient.DeleteMessageAsync(chatId, update.Message.MessageId, cancellationToken);
+            await botClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: "Воспоминание сохранено",
+                cancellationToken: cancellationToken
+            );
         }
     }
 }

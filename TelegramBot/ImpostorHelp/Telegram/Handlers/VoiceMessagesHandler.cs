@@ -1,5 +1,4 @@
 using ImpostorHelp.Repositories;
-using ImpostorHelp.Telegram.StaticClasses;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -13,7 +12,7 @@ public class VoiceMessagesHandler
         _voiceMessageRepository = new VoiceMessageRepository();
     }
 
-    public async Task AddVoiceToDb(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    public async Task AddVoiceToDbAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         if (update.Message != null)
         {
@@ -24,12 +23,13 @@ public class VoiceMessagesHandler
                 await _voiceMessageRepository.AddVoiceMessageIdToDb(chatId, fileId);
             }
 
-            var voiceMessagesCount = _voiceMessageRepository.GetChatVoiceMessagesCount(chatId);
-            var text = $"Отлично, у вас всего {voiceMessagesCount} записей";
+            await botClient.DeleteMessageAsync(update.Message.Chat.Id,update.Message.MessageId,cancellationToken);
+            
+            var text = "Сохранено";
             await botClient.SendTextMessageAsync(chatId, text, 
-                cancellationToken: cancellationToken,replyMarkup:RecordsKeyboard.AfterRecordKeyboard);
+                cancellationToken: cancellationToken);
+           
         }
     }
-
     
 }

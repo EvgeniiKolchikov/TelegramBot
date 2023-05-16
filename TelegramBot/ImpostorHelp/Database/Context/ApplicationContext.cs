@@ -1,3 +1,4 @@
+using ImpostorHelp.Database.Models;
 using ImpostorHelp.Models;
 using Microsoft.EntityFrameworkCore;
 

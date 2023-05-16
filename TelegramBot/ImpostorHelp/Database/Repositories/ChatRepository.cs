@@ -1,4 +1,5 @@
 using ImpostorHelp.Context;
+using ImpostorHelp.Database.Models;
 using ImpostorHelp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,24 +13,28 @@ public class ChatRepository : IChatRepository
         _db = new ApplicationContext();
     }
 
-    public async Task<bool> IsActiveChat(long chatId)
-    {
-        var isActive = await _db.Chats.AnyAsync(c => c.ChatId == chatId && c.IsActive == true);
-        if (!isActive)
-        {
-            await AddChatToDb(chatId);
-        }
-        return isActive;
-    }
-
     public async Task AddChatToDb(long chatId)
     {
+        var chatFromDb = await _db.Chats.FirstOrDefaultAsync(c => c.ChatId == chatId);
+        if (chatFromDb is not null) return;
         var chat = new Chat
         {
             ChatId = chatId,
-            IsActive = true
+            NotificationTime = TimeOnly.FromDateTime(DateTime.UtcNow + TimeSpan.FromHours(3))
         };
         await _db.Chats.AddAsync(chat);
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task AddNotificationTimeAsync(long chatId, TimeOnly time)
+    {
+        var chat = _db.Chats.FirstOrDefault(c => c.ChatId == chatId);
+        if (chat != null)
+        {
+            chat.NotificationTime = time;
+            _db.Chats.Update(chat);
+        }
+
         await _db.SaveChangesAsync();
     }
 }

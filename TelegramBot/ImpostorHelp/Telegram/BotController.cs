@@ -1,9 +1,10 @@
+using System.Text.RegularExpressions;
 using ImpostorHelp.Database.Repositories;
 using ImpostorHelp.Repositories;
 using ImpostorHelp.Telegram.Dialogs;
 using ImpostorHelp.Telegram.Handlers;
-using ImpostorHelp.Telegram.Voice;
 using Telegram.Bot;
+using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using File = System.IO.File;
@@ -17,21 +18,21 @@ public class BotController
     private readonly StartDialog _startDialog;
     private readonly DailyPositiveDialog _dailyPositiveDialog;
     private readonly DailyNegativeDialog _dailyNegativeDialog;
-    private readonly StandardResponse _standardResponse;
     private readonly VoiceMessagesHandler _voiceMessagesHandler;
     private readonly TextMessageHandler _textMessageHandler;
     private readonly MessagesToStartConversation _messagesToStartConversation;
+    private readonly NotificationTimeSetter _notificationTimeSetter;
     public BotController()
     {
         _chatRepository = new ChatRepository();
         _voiceMessageRepository = new VoiceMessageRepository();
         _startDialog = new StartDialog(_chatRepository,_voiceMessageRepository);
         _dailyPositiveDialog = new DailyPositiveDialog();
-        _standardResponse = new StandardResponse();
         _voiceMessagesHandler = new VoiceMessagesHandler();
         _textMessageHandler = new TextMessageHandler();
         _messagesToStartConversation = new MessagesToStartConversation();
         _dailyNegativeDialog = new DailyNegativeDialog();
+        _notificationTimeSetter = new NotificationTimeSetter();
     }
 
     public async Task Run(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -42,24 +43,36 @@ public class BotController
                 if (update.Message != null && update.Message.Text is not null)
                 {
                     var text = update.Message.Text;
-                    switch (text)
+                    if (text == "/start")
                     {
-                        case "/start":
-                            await _startDialog.StartingTextDialog(botClient, update, cancellationToken);
-                            break;
-                        
-                        case "/daily" :
-                            await _messagesToStartConversation.DailyTextDialog(botClient, update, cancellationToken);
-                            break;
-                        
-                        default:
-                            await _textMessageHandler.AddTextMessage(botClient, update, cancellationToken);
-                            break;
+                        await _chatRepository.AddChatToDb(update.Message.Chat.Id);
+                        await _startDialog.StartingTextDialog(botClient, update, cancellationToken);
+                    }
+                    else if (text == "/daily")
+                    {
+                        await _messagesToStartConversation.DailyTextDialog(botClient, update, cancellationToken);
+                    }
+                    else if (text == "/Изменить время уведомления")
+                    {
+                        await _notificationTimeSetter.MessageBeforeTimeChange(botClient, update, cancellationToken);
+                    }
+                    else if (text.StartsWith("Время."))
+                    {
+                        await _notificationTimeSetter.SetNotificationTimeFromText(botClient, update, cancellationToken);
+                    }
+                    else if (text.StartsWith("Воспоминание:"))
+                    {
+                        await _textMessageHandler.AddTextMessage(botClient, update, cancellationToken);
+                    }
+                    else
+                    {
+                        await botClient.DeleteMessageAsync(update.Message.Chat.Id, update.Message.MessageId,
+                            cancellationToken);
                     }
                 }
                 if (update.Message != null && update.Message.Voice != null)
                 {
-                    await _voiceMessagesHandler.AddVoiceToDb(botClient,update,cancellationToken);
+                    await _voiceMessagesHandler.AddVoiceToDbAsync(botClient,update,cancellationToken);
                 }
                break;
             
@@ -68,6 +81,10 @@ public class BotController
                 if (update.CallbackQuery != null && update.CallbackQuery.Data != null &&
                     update.CallbackQuery.Data.Contains("StartDialog"))
                 {
+                    if (update.CallbackQuery.Data.Contains("5Level.Time"))
+                    {
+                        await _notificationTimeSetter.SetNotificationTimeFromCallBack(botClient, update, cancellationToken);
+                    }
                     await _startDialog.StartingCallBackQueryDialog(botClient, update, cancellationToken);
                 }
                 if (update.CallbackQuery != null && update.CallbackQuery.Data != null && 
@@ -80,11 +97,9 @@ public class BotController
                 {
                     await _dailyNegativeDialog.DailyNegativeCallBackQueryDialog(botClient, update, cancellationToken);
                 }
-                else
-                {
-                    await _standardResponse.StandardCallBackQueryResponse(botClient, update, cancellationToken);
-                }
                 break;
         }
     }
+
+    
 }
