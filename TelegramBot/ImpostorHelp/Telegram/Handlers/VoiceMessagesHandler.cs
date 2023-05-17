@@ -20,7 +20,7 @@ public class VoiceMessagesHandler
             if (update.Message.Voice != null)
             {
                 var fileId = update.Message.Voice.FileId;
-                await _voiceMessageRepository.AddVoiceMessageIdToDb(chatId, fileId);
+                await _voiceMessageRepository.AddVoiceMessageToDb(chatId, fileId);
             }
 
             await botClient.DeleteMessageAsync(update.Message.Chat.Id,update.Message.MessageId,cancellationToken);

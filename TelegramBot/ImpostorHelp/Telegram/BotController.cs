@@ -20,6 +20,7 @@ public class BotController
     private readonly DailyNegativeDialog _dailyNegativeDialog;
     private readonly VoiceMessagesHandler _voiceMessagesHandler;
     private readonly TextMessageHandler _textMessageHandler;
+    private readonly ImageMessageHandler _imageMessageHandler;
     private readonly MessagesToStartConversation _messagesToStartConversation;
     private readonly NotificationTimeSetter _notificationTimeSetter;
     public BotController()
@@ -33,6 +34,7 @@ public class BotController
         _messagesToStartConversation = new MessagesToStartConversation();
         _dailyNegativeDialog = new DailyNegativeDialog();
         _notificationTimeSetter = new NotificationTimeSetter();
+        _imageMessageHandler = new ImageMessageHandler();
     }
 
     public async Task Run(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -70,9 +72,15 @@ public class BotController
                             cancellationToken);
                     }
                 }
+                
                 if (update.Message != null && update.Message.Voice != null)
                 {
                     await _voiceMessagesHandler.AddVoiceToDbAsync(botClient,update,cancellationToken);
+                }
+
+                if (update.Message != null && update.Message.Photo != null)
+                {
+                    await _imageMessageHandler.AddImageToDbAsync(botClient, update, cancellationToken);
                 }
                break;
             
@@ -98,6 +106,7 @@ public class BotController
                     await _dailyNegativeDialog.DailyNegativeCallBackQueryDialog(botClient, update, cancellationToken);
                 }
                 break;
+            
         }
     }
 

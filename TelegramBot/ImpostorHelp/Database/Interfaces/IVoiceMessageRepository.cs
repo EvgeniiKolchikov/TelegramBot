@@ -4,6 +4,6 @@ namespace ImpostorHelp;
 
 public interface IVoiceMessageRepository
 {
-    Task AddVoiceMessageIdToDb(long chatId,string fileId);
+    Task AddVoiceMessageToDb(long chatId,string fileId);
     public int GetChatVoiceMessagesCount(long chatId);
 }

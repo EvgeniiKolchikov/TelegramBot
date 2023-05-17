@@ -9,6 +9,7 @@ public class ApplicationContext : DbContext
     public DbSet<Chat> Chats { get; set; }
     public DbSet<VoiceMessage> VoiceMessages { get; set; }
     public DbSet<TextMessage> TextMessages { get; set; }
+    public DbSet<ImageMessage> ImageMessages { get; set; }
 
     public ApplicationContext()
     {

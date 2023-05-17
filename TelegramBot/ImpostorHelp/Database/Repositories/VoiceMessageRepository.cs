@@ -12,7 +12,7 @@ public class VoiceMessageRepository : IVoiceMessageRepository
         _db = new ApplicationContext();
     }
 
-    public async Task AddVoiceMessageIdToDb(long chatId, string fileId)
+    public async Task AddVoiceMessageToDb(long chatId, string fileId)
     {
         var voiceMessage = new VoiceMessage
         {
