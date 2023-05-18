@@ -1,6 +1,8 @@
+using System.Reflection.Metadata.Ecma335;
 using ImpostorHelp.Context;
 using ImpostorHelp.Database.Interfaces;
 using ImpostorHelp.Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ImpostorHelp.Database.Repositories;
 
@@ -33,5 +35,11 @@ public class ImageRepository : IImageRepository
         var image = _db.ImageMessages.Where(i => i.ChatId == chatId).ToList();
         var id = image.Select(fileId => fileId.ImageFileId).ToList();
         return id[0];
+    }
+
+    public async Task<bool> ImageExistInDb(string fileId)
+    {
+        var image = await _db.ImageMessages.FirstOrDefaultAsync(i => i.ImageFileId == fileId);
+        return image is not null;
     }
 }

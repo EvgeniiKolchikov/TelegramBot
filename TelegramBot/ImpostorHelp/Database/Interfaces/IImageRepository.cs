@@ -4,4 +4,5 @@ public interface IImageRepository
 {
     Task AddImageToDbAsync(long chatId, string fileId);
     Task<string> GetImageFileIdAsync(long chatId);
+    Task<bool> ImageExistInDb(string fileId);
 }

@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpostorHelp", "ImpostorHelp\ImpostorHelp.csproj", "{ECB15266-2F59-493B-B46D-EF88E36AC42C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpostorHelpNotificator", "ImpostorHelpNotificator\ImpostorHelpNotificator.csproj", "{694AE744-7D32-4609-A09C-AD4F38C8D258}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{ECB15266-2F59-493B-B46D-EF88E36AC42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECB15266-2F59-493B-B46D-EF88E36AC42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECB15266-2F59-493B-B46D-EF88E36AC42C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{694AE744-7D32-4609-A09C-AD4F38C8D258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{694AE744-7D32-4609-A09C-AD4F38C8D258}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{694AE744-7D32-4609-A09C-AD4F38C8D258}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{694AE744-7D32-4609-A09C-AD4F38C8D258}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
