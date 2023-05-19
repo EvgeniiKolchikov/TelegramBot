@@ -1,5 +1,5 @@
+using ImpostorHelp.Database.Repositories;
 using ImpostorHelp.Telegram.Keyboards;
-using ImpostorHelp.Telegram.StaticClasses;
 using Newtonsoft.Json.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -8,14 +8,14 @@ namespace ImpostorHelp.Telegram.Dialogs;
 
 public class StartDialog
 {
-    private readonly IChatRepository _chatRepository;
-    private readonly IVoiceMessageRepository _voiceMessageRepository;
+    private readonly ChatRepository _chatRepository;
+    private readonly VoiceMessageRepository _voiceMessageRepository;
     private readonly JObject _sentence;
 
-    public StartDialog(IChatRepository chatRepository, IVoiceMessageRepository voiceMessageRepository)
+    public StartDialog()
     {
-        _chatRepository = chatRepository;
-        _voiceMessageRepository = voiceMessageRepository;
+        _chatRepository = new ChatRepository();
+        _voiceMessageRepository = new VoiceMessageRepository();
     }
     
     public async Task StartingTextDialog (ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)

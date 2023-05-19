@@ -1,3 +1,4 @@
+using ImpostorHelp.Telegram.Handlers;
 using ImpostorHelp.Telegram.StaticClasses;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -9,10 +10,16 @@ namespace ImpostorHelp.Telegram.Dialogs;
 /// </summary>
 public class DailyPositiveDialog
 {
-   
+    private UserPositiveChoiceRecordHandler _handler;
+
+    public DailyPositiveDialog()
+    {
+        _handler = new UserPositiveChoiceRecordHandler();
+    }
+    
     public async Task DailyPositiveCallBackQueryDialog(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        if (update.CallbackQuery != null)
+        if (update.CallbackQuery != null && update.CallbackQuery.Data != null)
         {
             var chatId = update.CallbackQuery.From.Id;
             if (update.CallbackQuery.Data == "DailyPositiveDialog.1Level")
@@ -26,7 +33,7 @@ public class DailyPositiveDialog
                     replyMarkup: DailyPositiveDialogKeyboards.SecondLevelKeyboard
                 );
             }
-            else if (update.CallbackQuery.Data == "DailyPositiveDialog.2Level.1-3")
+            else if (update.CallbackQuery.Data.Contains("DailyPositiveDialog.2Level.1-3"))
             {
                 var level2Message13 = " Люди, подверженные феномену самозванца часто склонны занижать значимость своих успехов." +
                                       " Дай себе минутку на размышления: возможно, ты недооцениваешь сегодняшний день? 😉" +
@@ -38,8 +45,9 @@ public class DailyPositiveDialog
                     replyMarkup: DailyPositiveDialogKeyboards.ThirdLevelKeyboard13
                 );
             }
-            else if (update.CallbackQuery.Data == "DailyPositiveDialog.2Level.4-7")
+            else if (update.CallbackQuery.Data.Contains("DailyPositiveDialog.2Level.4-7"))
             {
+                await _handler.SaveChoiceAsync(update.CallbackQuery.From.Id,update.CallbackQuery.Data);
                 var level2Message47 = "То есть сегодняшний день может вселить уверенность на будущее, что не такой уж я и самозванец? " +
                                       "\nДавай запишем себе напоминание об этом опыте То есть сегодняшний день может вселить уверенность в будущем, что не такой уж я и самозванец? Класс! Давай запишем себе напоминание об этом опыте." +
                                       "\n \nВыбери формат, в котором зафиксируешь момент:";
@@ -50,8 +58,9 @@ public class DailyPositiveDialog
                     replyMarkup: DailyPositiveDialogKeyboards.ThirdLevelKeyboard47
                 );
             }
-            else if (update.CallbackQuery.Data == "DailyPositiveDialog.2Level.8-10")
+            else if (update.CallbackQuery.Data.Contains("DailyPositiveDialog.2Level.8-10"))
             {
+                await _handler.SaveChoiceAsync(update.CallbackQuery.From.Id,update.CallbackQuery.Data);
                 var level2Message810 =
                     "Круто! Такой опыт сможет вдохновить тебя в будущем, если самозванец постучится в дверь. Давай сохраним сегодняшние эмоции в коллекцию!" +
                     "\n \nВыбери формат, в котором зафиксируешь момент:";
@@ -62,8 +71,9 @@ public class DailyPositiveDialog
                     replyMarkup: DailyPositiveDialogKeyboards.ThirdLevelKeyboard810
                 );
             }
-            else if (update.CallbackQuery.Data == "DailyPositiveDialog.3Level.1-3")
+            else if (update.CallbackQuery.Data.Contains("DailyPositiveDialog.3Level.1-3"))
             {
+                await _handler.SaveChoiceAsync(update.CallbackQuery.From.Id,update.CallbackQuery.Data);
                 var level3MessageNo =
                     "Принято. Как ты думаешь, опыт сегодняшнего дня может вдохновить тебя в будущем?";
                 await botClient.SendTextMessageAsync(

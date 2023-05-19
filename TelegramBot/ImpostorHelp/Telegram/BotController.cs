@@ -1,6 +1,5 @@
 using System.Text.RegularExpressions;
 using ImpostorHelp.Database.Repositories;
-using ImpostorHelp.Repositories;
 using ImpostorHelp.Telegram.Dialogs;
 using ImpostorHelp.Telegram.Handlers;
 using Telegram.Bot;
@@ -13,8 +12,8 @@ namespace ImpostorHelp.Telegram;
 
 public class BotController
 {
-    private readonly IChatRepository _chatRepository;
-    private readonly IVoiceMessageRepository _voiceMessageRepository;
+    private readonly ChatRepository _chatRepository;
+    private readonly VoiceMessageRepository _voiceMessageRepository;
     private readonly StartDialog _startDialog;
     private readonly DailyPositiveDialog _dailyPositiveDialog;
     private readonly DailyNegativeDialog _dailyNegativeDialog;
@@ -27,7 +26,7 @@ public class BotController
     {
         _chatRepository = new ChatRepository();
         _voiceMessageRepository = new VoiceMessageRepository();
-        _startDialog = new StartDialog(_chatRepository,_voiceMessageRepository);
+        _startDialog = new StartDialog();
         _dailyPositiveDialog = new DailyPositiveDialog();
         _voiceMessagesHandler = new VoiceMessagesHandler();
         _textMessageHandler = new TextMessageHandler();
@@ -54,7 +53,7 @@ public class BotController
                     {
                         await _messagesToStartConversation.DailyTextDialog(botClient, update, cancellationToken);
                     }
-                    else if (text == "/Изменить время уведомления")
+                    else if (text == "/notificationTime")
                     {
                         await _notificationTimeSetter.MessageBeforeTimeChange(botClient, update, cancellationToken);
                     }
@@ -62,15 +61,11 @@ public class BotController
                     {
                         await _notificationTimeSetter.SetNotificationTimeFromText(botClient, update, cancellationToken);
                     }
-                    else if (text.StartsWith("Воспоминание:"))
+                    else if (text.StartsWith("Воспоминание"))
                     {
                         await _textMessageHandler.AddTextMessage(botClient, update, cancellationToken);
                     }
-                    else
-                    {
-                        await botClient.DeleteMessageAsync(update.Message.Chat.Id, update.Message.MessageId,
-                            cancellationToken);
-                    }
+                    
                 }
                 
                 if (update.Message != null && update.Message.Voice != null)

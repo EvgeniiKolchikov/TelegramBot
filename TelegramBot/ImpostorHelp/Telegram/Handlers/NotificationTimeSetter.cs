@@ -7,7 +7,7 @@ namespace ImpostorHelp.Telegram.Handlers;
 
 public class NotificationTimeSetter
 {
-    private IChatRepository _chatRepository;
+    private ChatRepository _chatRepository;
     private string _regexTemplate = @"^(?:[01]?[0-9]|2[0-3]):[0-5][0-9]$";
     public NotificationTimeSetter()
     {
@@ -35,7 +35,7 @@ public class NotificationTimeSetter
             
             await botClient.SendTextMessageAsync(
                 chatId: update.CallbackQuery.From.Id,
-                text: "Сохранено" + time,
+                text: "Сохранено " + time,
                 cancellationToken: cancellationToken
             );
         }

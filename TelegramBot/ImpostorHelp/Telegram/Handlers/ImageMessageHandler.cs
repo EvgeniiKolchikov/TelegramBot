@@ -1,4 +1,3 @@
-using ImpostorHelp.Database.Interfaces;
 using ImpostorHelp.Database.Repositories;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -7,7 +6,7 @@ namespace ImpostorHelp.Telegram.Handlers;
 
 public class ImageMessageHandler
 {
-    private IImageRepository _imageRepository;
+    private ImageRepository _imageRepository;
     private bool _imageSavedInDb;
 
     public ImageMessageHandler()

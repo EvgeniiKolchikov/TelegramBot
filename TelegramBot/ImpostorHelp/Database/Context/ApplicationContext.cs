@@ -10,6 +10,11 @@ public class ApplicationContext : DbContext
     public DbSet<VoiceMessage> VoiceMessages { get; set; }
     public DbSet<TextMessage> TextMessages { get; set; }
     public DbSet<ImageMessage> ImageMessages { get; set; }
+    
+    public DbSet<UserPositiveChoice> UserPositiveChoices { get; set; }
+    public DbSet<UserNegativeChoice> UserNegativeChoices { get; set; }
+    public DbSet<SupportingTextFact> SupportingFacts { get; set; }
+
 
     public ApplicationContext()
     {

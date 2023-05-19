@@ -1,4 +1,4 @@
-using ImpostorHelp.Repositories;
+using ImpostorHelp.Database.Repositories;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -6,7 +6,7 @@ namespace ImpostorHelp.Telegram.Handlers;
 
 public class VoiceMessagesHandler
 {
-    private readonly IVoiceMessageRepository _voiceMessageRepository;
+    private readonly VoiceMessageRepository _voiceMessageRepository;
     public VoiceMessagesHandler()
     {
         _voiceMessageRepository = new VoiceMessageRepository();

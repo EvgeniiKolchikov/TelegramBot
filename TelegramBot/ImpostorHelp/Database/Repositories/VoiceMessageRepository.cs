@@ -1,15 +1,17 @@
 using ImpostorHelp.Context;
 using ImpostorHelp.Models;
 
-namespace ImpostorHelp.Repositories;
+namespace ImpostorHelp.Database.Repositories;
 
-public class VoiceMessageRepository : IVoiceMessageRepository
+public class VoiceMessageRepository 
 {
     private readonly ApplicationContext _db;
+    private Random _random;
 
     public VoiceMessageRepository()
     {
         _db = new ApplicationContext();
+        _random = new Random();
     }
 
     public async Task AddVoiceMessageToDb(long chatId, string fileId)
@@ -23,9 +25,10 @@ public class VoiceMessageRepository : IVoiceMessageRepository
         await _db.VoiceMessages.AddAsync(voiceMessage);
         await _db.SaveChangesAsync();
     }
-    public int GetChatVoiceMessagesCount(long chatId)
+    public string GetChatVoiceId(long chatId)
     {
-       return _db.VoiceMessages.Where(m => m.ChatId == chatId).ToList().Count;
+        var voice = _db.VoiceMessages.Where(v => v.ChatId == chatId).Select(v => v.VoiceMessageFileId).ToList();
+        return voice[_random.Next(voice.Count)];
     }
     
     

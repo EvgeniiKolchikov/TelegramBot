@@ -1,4 +1,3 @@
-using ImpostorHelp.Database.Interfaces;
 using ImpostorHelp.Database.Repositories;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -7,7 +6,7 @@ namespace ImpostorHelp.Telegram.Handlers;
 
 public class TextMessageHandler
 {
-    private readonly ITextMessageRepository _textMessageRepository;
+    private readonly TextMessageRepository _textMessageRepository;
     public TextMessageHandler()
     {
         _textMessageRepository = new TextMessageRepository();

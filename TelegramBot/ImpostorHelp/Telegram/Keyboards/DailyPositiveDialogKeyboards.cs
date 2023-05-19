@@ -9,19 +9,19 @@ public static class DailyPositiveDialogKeyboards
     {
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "1", callbackData: "DailyPositiveDialog.2Level.1-3"),
-            InlineKeyboardButton.WithCallbackData(text: "2", callbackData: "DailyPositiveDialog.2Level.1-3"),
-            InlineKeyboardButton.WithCallbackData(text: "3", callbackData: "DailyPositiveDialog.2Level.1-3"),
-            InlineKeyboardButton.WithCallbackData(text: "4", callbackData: "DailyPositiveDialog.2Level.4-7"),
-            InlineKeyboardButton.WithCallbackData(text: "5", callbackData: "DailyPositiveDialog.2Level.4-7"),
+            InlineKeyboardButton.WithCallbackData(text: "1", callbackData: "DailyPositiveDialog.2Level.1-3.01"),
+            InlineKeyboardButton.WithCallbackData(text: "2", callbackData: "DailyPositiveDialog.2Level.1-3.02"),
+            InlineKeyboardButton.WithCallbackData(text: "3", callbackData: "DailyPositiveDialog.2Level.1-3.03"),
+            InlineKeyboardButton.WithCallbackData(text: "4", callbackData: "DailyPositiveDialog.2Level.4-7.04"),
+            InlineKeyboardButton.WithCallbackData(text: "5", callbackData: "DailyPositiveDialog.2Level.4-7.05"),
         },
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "6", callbackData: "DailyPositiveDialog.2Level.4-7"),
-            InlineKeyboardButton.WithCallbackData(text: "7", callbackData: "DailyPositiveDialog.2Level.4-7"),
-            InlineKeyboardButton.WithCallbackData(text: "8", callbackData: "DailyPositiveDialog.2Level.8-10"),
-            InlineKeyboardButton.WithCallbackData(text: "9", callbackData: "DailyPositiveDialog.2Level.8-10"),
-            InlineKeyboardButton.WithCallbackData(text: "10", callbackData: "DailyPositiveDialog.2Level.8-10")
+            InlineKeyboardButton.WithCallbackData(text: "6", callbackData: "DailyPositiveDialog.2Level.4-7.06"),
+            InlineKeyboardButton.WithCallbackData(text: "7", callbackData: "DailyPositiveDialog.2Level.4-7.07"),
+            InlineKeyboardButton.WithCallbackData(text: "8", callbackData: "DailyPositiveDialog.2Level.8-10.08"),
+            InlineKeyboardButton.WithCallbackData(text: "9", callbackData: "DailyPositiveDialog.2Level.8-10.09"),
+            InlineKeyboardButton.WithCallbackData(text: "10", callbackData: "DailyPositiveDialog.2Level.8-10.10")
         }
     });
     
@@ -29,19 +29,19 @@ public static class DailyPositiveDialogKeyboards
     {
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "1", callbackData: "DailyPositiveDialog.3Level.1-3"),
-            InlineKeyboardButton.WithCallbackData(text: "2", callbackData: "DailyPositiveDialog.3Level.1-3"),
-            InlineKeyboardButton.WithCallbackData(text: "3", callbackData: "DailyPositiveDialog.3Level.1-3"),
-            InlineKeyboardButton.WithCallbackData(text: "4", callbackData: "DailyPositiveDialog.2Level.4-7"),
-            InlineKeyboardButton.WithCallbackData(text: "5", callbackData: "DailyPositiveDialog.2Level.4-7"),
+            InlineKeyboardButton.WithCallbackData(text: "1", callbackData: "DailyPositiveDialog.3Level.1-3.01"),
+            InlineKeyboardButton.WithCallbackData(text: "2", callbackData: "DailyPositiveDialog.3Level.1-3.02"),
+            InlineKeyboardButton.WithCallbackData(text: "3", callbackData: "DailyPositiveDialog.3Level.1-3.03"),
+            InlineKeyboardButton.WithCallbackData(text: "4", callbackData: "DailyPositiveDialog.2Level.4-7.04"),
+            InlineKeyboardButton.WithCallbackData(text: "5", callbackData: "DailyPositiveDialog.2Level.4-7.05"),
         },
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "6", callbackData: "DailyPositiveDialog.2Level.4-7"),
-            InlineKeyboardButton.WithCallbackData(text: "7", callbackData: "DailyPositiveDialog.2Level.4-7"),
-            InlineKeyboardButton.WithCallbackData(text: "8", callbackData: "DailyPositiveDialog.2Level.8-10"),
-            InlineKeyboardButton.WithCallbackData(text: "9", callbackData: "DailyPositiveDialog.2Level.8-10"),
-            InlineKeyboardButton.WithCallbackData(text: "10", callbackData: "DailyPositiveDialog.2Level.8-10")
+            InlineKeyboardButton.WithCallbackData(text: "6", callbackData: "DailyPositiveDialog.2Level.4-7.06"),
+            InlineKeyboardButton.WithCallbackData(text: "7", callbackData: "DailyPositiveDialog.2Level.4-7.07"),
+            InlineKeyboardButton.WithCallbackData(text: "8", callbackData: "DailyPositiveDialog.2Level.8-10.08"),
+            InlineKeyboardButton.WithCallbackData(text: "9", callbackData: "DailyPositiveDialog.2Level.8-10.09"),
+            InlineKeyboardButton.WithCallbackData(text: "10", callbackData: "DailyPositiveDialog.2Level.8-10.10")
         }
     });
     

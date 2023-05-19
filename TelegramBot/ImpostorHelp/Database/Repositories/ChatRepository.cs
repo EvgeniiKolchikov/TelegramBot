@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ImpostorHelp.Database.Repositories;
 
-public class ChatRepository : IChatRepository
+public class ChatRepository
 {
     private readonly ApplicationContext _db;
     public ChatRepository()
