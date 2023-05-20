@@ -28,11 +28,15 @@ public class ImageRepository
         await _db.SaveChangesAsync();
     }
 
-    public string GetImageFileIdAsync(long chatId)
+    public string? GetImageFileIdAsync(long chatId)
     {
-        var image = _db.ImageMessages.Where(i => i.ChatId == chatId).ToList();
-        var id = image.Select(fileId => fileId.ImageFileId).ToList();
-        return id[_random.Next(id.Count - 1)];
+        List<string>? image = _db.ImageMessages.Where(i => i.ChatId == chatId)
+                                .Select(fileId => fileId.ImageFileId).ToList();
+        if (image.Count == 0)
+        {
+            return null;
+        }
+        return image[_random.Next(0,image.Count)];
     }
 
     public async Task<bool> ImageExistInDb(string fileId)

@@ -53,7 +53,7 @@ public class BotController
                     {
                         await _messagesToStartConversation.DailyTextDialog(botClient, update, cancellationToken);
                     }
-                    else if (text == "/notificationTime")
+                    else if (text == "/notification")
                     {
                         await _notificationTimeSetter.MessageBeforeTimeChange(botClient, update, cancellationToken);
                     }

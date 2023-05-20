@@ -201,6 +201,7 @@ public class DailyNegativeDialog
             
             else if (update.CallbackQuery.Data.Contains("DailyNegativeDialog.2Level.4-7"))
             {
+                await _choiceRecordHandler.SaveFirstChoiceAsync(chatId, update.CallbackQuery.Data);
                 var level2Message47 =
                     "Ты хочешь разобрать ситуацию или получить поддержку?";
                 await botClient.SendTextMessageAsync(
@@ -233,16 +234,14 @@ public class DailyNegativeDialog
                 );
 
                 var rnd = new Random();
-                var number = rnd.Next(1, 5);
+                var number = rnd.Next(1, 4);
                 switch (number)
                 {
                     case 1: await _supportHandler.GetImageSupport(botClient, update, cancellationToken);
                         break;
-                    case 2: _supportHandler.GetTextSupport(botClient, update, cancellationToken);
+                    case 2: await _supportHandler.GetTextSupport(botClient, update, cancellationToken);
                         break;
-                    case 3: _supportHandler.GetVoiceSupport(botClient, update, cancellationToken);
-                        break;
-                    case 4: _supportHandler.GetSupportFactsText(botClient,update,cancellationToken);
+                    case 3: await _supportHandler.GetVoiceSupport(botClient, update, cancellationToken);
                         break;
                 }
 
@@ -252,19 +251,130 @@ public class DailyNegativeDialog
                     chatId: chatId,
                     text: message1,
                     cancellationToken: cancellationToken,
-                    replyMarkup: DailyNegativeDialogKeyboards.SecondLevelKeyboardAfter810
+                    replyMarkup: DailyNegativeDialogKeyboards.KeyboardAfterSupportMe
                 );
             }
+            
+            else if (update.CallbackQuery.Data.Contains("DailyNegativeDialog.AfterSupport"))
+            {
+                await _choiceRecordHandler.SaveSecondChoiceAsync(chatId, update.CallbackQuery.Data);
+                var m1 = _choiceRecordHandler.GetFirstChoice(botClient, update, cancellationToken);
+                var m2 = _choiceRecordHandler.GetSecondChoice(botClient, update, cancellationToken);
 
+                if (m1 == null || m2 == null)
+                {
+                    
+                }
+                else if (m1 > m2)
+                {
+                    var message = "Ух ты, круто! Похоже, что тебе сейчас стало легче.  " +
+                                  $"Ведь в начале ты чувствовал себя самозванцем на {m1} баллов, " +
+                        $"а теперь интенсивность снизилась до {m2}. " +
+                        "Для этого я (бот) и был создан :) " +
+                        "Постарайся зафиксировать это ощущение: ты можешь поддерживать себя," +
+                        " когда нападает \"синдром самозванца\". Он не всесилен. " +
+                        "А ты - да :) Как думаешь, мы можем остановиться на этом? " +
+                        "И ты сможешь побыть с ощущением победителя, сохранить это чувство до завтра.";
+                    
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: message,
+                        cancellationToken: cancellationToken,
+                        replyMarkup: DailyNegativeDialogKeyboards.KeyboardM1MoreM2
+                    );
+                }
+                else if (m1 == m2)
+                {
+                    var message = "Я вижу, что твоё состояние осталось прежним. " +
+                                  $"Ты всё ещё чувствуешь себя самозванцем на {m1} баллов. " +
+                                  $"\nНо может быть за время время нашего разговора ты ощутил, " +
+                                  "что можешь справиться с этой ситуацией? Ведь неприятности иногда случаются... " +
+                                  "\nСпособность выдерживать огорчения - тоже сильная сторона личности. " +
+                                  "Мы можем закончить на этом. Или предложить тебе ещё поддержку?";
+                    
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: message,
+                        cancellationToken: cancellationToken,
+                        replyMarkup: DailyNegativeDialogKeyboards.KeyboardM1EqualM2
+                    );
+                    
+                }
+                else if (m2 > m1)
+                {
+                    var message =
+                        $"Ох, похоже тебе стало хуже, ведь в начале нашего разговора ты чувствовал себя самозванцем на \"{m1}\", " +
+                        $"а теперь на \"{m2}\" баллов. Может быть я могу предложить тебе ещё помощь?";
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: message,
+                        cancellationToken: cancellationToken,
+                        replyMarkup: DailyNegativeDialogKeyboards.KeyboardM2MoreM1
+                    );
+                }
+            }
+            
             else if (update.CallbackQuery.Data.Contains("DailyNegativeDialog.3Level.8-10"))
             {
+                await _choiceRecordHandler.SaveFirstChoiceAsync(chatId, update.CallbackQuery.Data);
                 var level3Message810 =
                     " Блин! Очень Жаль... Что может помочь тебе сейчас лучше всего?";
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: level3Message810,
                     cancellationToken: cancellationToken,
-                    replyMarkup: DailyNegativeDialogKeyboards.FourLevelKeyboard810
+                    replyMarkup: DailyNegativeDialogKeyboards.ThirdLevelKeyboard810
+                );
+            }
+            
+            else if (update.CallbackQuery.Data.Contains("DailyNegativeDialog.SelfHelp"))
+            {
+                var message =
+                    " Возможно сейчас я не в силах помочь тебе так, как это необходимо. Но я уверен, что ты можешь обратиться к другим своим ресурсам. " +
+                    "ДАЛЕЕ ИДЁТ МИКРО-НАНО-СТАТЕЙКА (текст ниже)" +
+                    "\n \nДо завтра!";
+                var message1 =
+                    "Я опросил опытных психологов (и Интернет). Вот что они рекомендуют для эмоциональной самоподдержки:" +
+                    "\n \n1) Ты можешь поделиться своей ситуацией с кем-то близким. На самом деле, феномен самозванца случается со многими людьми. Наверняка, среди твоих знакомых найдётся тот, кто поймёт тебя." +
+                    "\n2) Попроси того, кому ты доверяешь, дать тебе обратную связь — перечислить то, что у тебя получается делать хорошо. Только не в общих чертах, а с фактами, примерами — чтобы это могло убедить тебя :)" +
+                    "\n3) Переключись с ситуации, которая тебя заботит на то, что точно доставляет тебе удовольствие и получается на ура. Это может быть что угодно: бег, вышивание, готовка ужина, прогулка, настольный игры и т.д." +
+                    "\n4) Попробуй психологическую медитацию. Это не заумная практика для опытных йогов, а простое упражнение, которое позволит успокоить дыхание и мысли. В интернете легко найти такие видео (например, вот одно из них: https://www.youtube.com/watch?v=xMSsSr886To)." +
+                    "\n5) Подойдут любые формы творчества: нарисовать комикс о сложившейся ситуации, стих, потанцевать под любимую музыку, сделать что-то руками (даже если это просто поделка из мятой бумаги). Кстати, 73% пользователей соц.сетей отмечают, что им становится эмоционально легче, после того, как они опубликуют пост о своей проблеме. Вспомни хоть Степана Савельева и его динозавров :)";
+                
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: message,
+                    cancellationToken: cancellationToken
+                );
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: message1,
+                    cancellationToken: cancellationToken
+                );
+            }
+            
+            else if (update.CallbackQuery.Data.Contains("DailyNegativeDialog.Psychologist"))
+            {
+                var message = "Я могу порекомендовать тебе этих специалистов, я проверил их образование и опыт работы. " +
+                              "\nВерю, что они могут тебе помочь, а мы с тобой увидимся завтра! " +
+                              "\nДо встречи!" +
+                              "\nhttps://psyconsult24.ru/psychologists/";
+                    
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: message,
+                    cancellationToken: cancellationToken
+                );
+            }
+            
+            else if (update.CallbackQuery.Data.Contains("DailyNegativeDialog.Exit"))
+            {
+                var message = "Хорошего тебе нового дня! До встречи!";
+                    
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: message,
+                    cancellationToken: cancellationToken
                 );
             }
         }

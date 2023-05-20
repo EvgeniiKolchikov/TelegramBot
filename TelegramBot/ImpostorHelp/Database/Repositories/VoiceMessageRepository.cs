@@ -25,10 +25,14 @@ public class VoiceMessageRepository
         await _db.VoiceMessages.AddAsync(voiceMessage);
         await _db.SaveChangesAsync();
     }
-    public string GetChatVoiceId(long chatId)
+    public string? GetChatVoiceId(long chatId)
     {
         var voice = _db.VoiceMessages.Where(v => v.ChatId == chatId).Select(v => v.VoiceMessageFileId).ToList();
-        return voice[_random.Next(voice.Count)];
+        if (voice.Count == 0)
+        {
+            return null;
+        }
+        return voice[_random.Next(0,voice.Count)];
     }
     
     

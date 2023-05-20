@@ -25,10 +25,14 @@ public class TextMessageRepository
         await _db.SaveChangesAsync();
     }
 
-    public string GetTextFromDb(long chatId)
+    public string? GetTextFromDb(long chatId)
     {
-        var text = _db.TextMessages.Where(t => t.ChatId == chatId);
-        var messages = text.Select(t => t.Message).ToList();
-        return messages[_random.Next(messages.Count)];
+        var text = _db.TextMessages.Where(t => t.ChatId == chatId)
+                .Select(t => t.Message).ToList();
+        if (text.Count == 0)
+        {
+            return null;
+        }
+        return text[_random.Next(0,text.Count)];
     }
 }

@@ -27,7 +27,7 @@ public class SupportHandler
         CancellationToken cancellationToken)
     {
         var res = _imageRepository.GetImageFileIdAsync(update.CallbackQuery.From.Id);
-        if (res != "")
+        if (res != null)
         {
             await botClient.SendPhotoAsync(update.CallbackQuery.From.Id, res);
         }
@@ -41,7 +41,7 @@ public class SupportHandler
         CancellationToken cancellationToken)
     {
         var res = _voiceMessageRepository.GetChatVoiceId(update.CallbackQuery.From.Id);
-        if (res != "")
+        if (res != null)
         {
             await botClient.SendVoiceAsync(update.CallbackQuery.From.Id, res);
         }
@@ -55,7 +55,7 @@ public class SupportHandler
         CancellationToken cancellationToken)
     {
         var res = _textMessageRepository.GetTextFromDb(update.CallbackQuery.From.Id);
-        if (res != "")
+        if (res != null)
         {
             await botClient.SendTextMessageAsync(update.CallbackQuery.From.Id, res, cancellationToken: cancellationToken);
         }
@@ -68,6 +68,10 @@ public class SupportHandler
     public async Task GetSupportFactsText(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
+        var message =
+            "Я бы хотел приготовить тебе тёплый напиток или обнять тебя, но я только бот. Зато могу предложить тебе полезную информацию.";
+        await botClient.SendTextMessageAsync(update.CallbackQuery.From.Id, message,
+            cancellationToken: cancellationToken);
         var text = _supportingTextFactsRepository.GetTextFromDb();
         await botClient.SendTextMessageAsync(update.CallbackQuery.From.Id, text, cancellationToken: cancellationToken);
     }

@@ -13,7 +13,7 @@ public class ApplicationContext : DbContext
     
     public DbSet<UserPositiveChoice> UserPositiveChoices { get; set; }
     public DbSet<UserNegativeChoice> UserNegativeChoices { get; set; }
-    public DbSet<SupportingTextFact> SupportingFacts { get; set; }
+
 
 
     public ApplicationContext()

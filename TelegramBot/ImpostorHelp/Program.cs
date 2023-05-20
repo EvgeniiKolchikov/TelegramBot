@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ImpostorHelp.Notificator;
+using Microsoft.Extensions.Configuration;
 using Telegram.Bot;
 using ImpostorHelp.Telegram;
 using ImpostorHelp.Telegram.ExceptionsAndErrors;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
+
+
 
 try
 {
@@ -14,7 +17,8 @@ try
     var config = builder.Build();
     
     var botController = new BotController();
-    
+    var notificator = new Notificator();
+
     var botToken = config["Token"] ?? throw new Exception("токен отсутствует");
     var botClient = new TelegramBotClient(botToken);
 
@@ -34,9 +38,13 @@ try
 
     var me = await botClient.GetMeAsync();
     Console.WriteLine($"Start listening for @{me.Username}");
+    
+    Parallel.Invoke(() => notificator.NoticeAsync(botClient));
+    
     Console.ReadLine();
 
     cts.Cancel();
+
 
     Console.ReadLine();
 }
@@ -44,3 +52,5 @@ catch (Exception e)
 {
     Console.WriteLine(e.Message);
 }
+
+
