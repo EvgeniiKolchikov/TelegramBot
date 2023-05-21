@@ -22,6 +22,7 @@ public class BotController
     private readonly ImageMessageHandler _imageMessageHandler;
     private readonly MessagesToStartConversation _messagesToStartConversation;
     private readonly NotificationTimeSetter _notificationTimeSetter;
+    private readonly HelpMessageSender _helpMessageSender;
     public BotController()
     {
         _chatRepository = new ChatRepository();
@@ -34,6 +35,7 @@ public class BotController
         _dailyNegativeDialog = new DailyNegativeDialog();
         _notificationTimeSetter = new NotificationTimeSetter();
         _imageMessageHandler = new ImageMessageHandler();
+        _helpMessageSender = new HelpMessageSender();
     }
 
     public async Task Run(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -56,6 +58,10 @@ public class BotController
                     else if (text == "/notification")
                     {
                         await _notificationTimeSetter.MessageBeforeTimeChange(botClient, update, cancellationToken);
+                    }
+                    else if (text == "/help")
+                    {
+                        await _helpMessageSender.SendHelpMessage(botClient, update, cancellationToken);
                     }
                     else if (text.StartsWith("Время."))
                     {
