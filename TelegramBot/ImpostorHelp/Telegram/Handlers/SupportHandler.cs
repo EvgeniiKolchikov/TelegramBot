@@ -29,7 +29,9 @@ public class SupportHandler
         var res = _imageRepository.GetImageFileIdAsync(update.CallbackQuery.From.Id);
         if (res != null)
         {
-            await botClient.SendPhotoAsync(update.CallbackQuery.From.Id, res);
+            await botClient.SendPhotoAsync(update.CallbackQuery.From.Id, res[0]);
+            await botClient.SendTextMessageAsync(update.CallbackQuery.From.Id, res[1],
+                cancellationToken: cancellationToken);
         }
         else
         {

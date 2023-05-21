@@ -6,6 +6,5 @@ public class TextMessage
     public long ChatId { get; set; }
     public DateTime DateTime { get; set; }
     public string Message{ get; set; } = "";
-    public bool IsShowedLastTwoWeeks { get; set; }
     
 }

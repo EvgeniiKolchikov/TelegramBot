@@ -24,8 +24,10 @@ public class DailyPositiveDialog
             var chatId = update.CallbackQuery.From.Id;
             if (update.CallbackQuery.Data == "DailyPositiveDialog.1Level")
             {
-                var level1YesMessage = "Здорово! Если оценить это чувство по шкале от 1 до 10, где 1 — минимальное принятие своих достижений, " +
-                                       "а 10 - полноценная уверенность в том, что ты и есть причина своих успехов, какую оценку ты поставишь?";
+                var level1YesMessage = "Здорово! Оцени силу этого чувства по шкале от 1 до 10." +
+                                       "\n \nНа этой шкале:" +
+                                       "\n1 = “Я сделал(а) кое-что хорошее, но это не особо важно”" +
+                                       "\n10 = “Я сделал(а) кое-что по-настоящему крутое и значимое!”";
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: level1YesMessage,
@@ -48,8 +50,7 @@ public class DailyPositiveDialog
             else if (update.CallbackQuery.Data.Contains("DailyPositiveDialog.2Level.4-7"))
             {
                 await _handler.SaveChoiceAsync(update.CallbackQuery.From.Id,update.CallbackQuery.Data);
-                var level2Message47 = "То есть сегодняшний день может вселить уверенность на будущее, что не такой уж я и самозванец? " +
-                                      "\nДавай запишем себе напоминание об этом опыте То есть сегодняшний день может вселить уверенность в будущем, что не такой уж я и самозванец? Класс! Давай запишем себе напоминание об этом опыте." +
+                var level2Message47 = "То есть сегодняшний день может вселить уверенность в будущем, что не такой уж ты и самозванец?" +
                                       "\n \nВыбери формат, в котором зафиксируешь момент:";
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
@@ -107,11 +108,12 @@ public class DailyPositiveDialog
             
             else if (update.CallbackQuery.Data == "DailyPositiveDialog.Yes.Text")
             {
-                var recordTextMessage = "Напиши текст, обращаясь к самому себе. " +
+                var recordTextMessage = "Напиши текст, обращаясь к самому себе." +
                                         "\nТекст должен начинаться со слов \"Воспоминание:\"" +
-                                        "\nШаг 1: опиши саму ситуацию, которая сегодня тебя укрепила в  своих профессиональных силах" +
-                                        "\nШаг 2: расскажи, чем ты доволен в своих действиях?" +
-                                        "\nШаг 3: какие чувства ты испытал, которые хочешь сохранить в своей памяти? ";
+                    "\n \nШаг 1: что именно с тобой произошло, что подтвердило твою состоятельность?" +
+                    "\nШаг 2: какие твои действия помогли тебе почувствовать удовлетворенность собой?" +
+                    "\nШаг 3: какие чувства, связанные с событием, ты хочешь сохранить в своей памяти?" +
+                    "\n \nЗапиши текст, отправь его мне, а затем нажми на кнопку Написал(а)";
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: recordTextMessage,
@@ -124,7 +126,8 @@ public class DailyPositiveDialog
                 var recordVoiceMessage = "Запиши аудио, обращаясь к самому себе." +
                                          "\n \nШаг 1: что именно с тобой произошло, что подтвердило твою состоятельность?" +
                                          "\nШаг 2: какие твои действия помогли тебе почувствовать удовлетворенность собой?" +
-                                         "\nШаг 3: какие чувства, связанные с событием, ты хочешь сохранить в своей памяти?";
+                                         "\nШаг 3: какие чувства, связанные с событием, ты хочешь сохранить в своей памяти?" +
+                                         "\n \nЗапиши аудио, отправь его мне, а затем нажми на кнопку Записал(а)";
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: recordVoiceMessage,
@@ -136,7 +139,8 @@ public class DailyPositiveDialog
             else if (update.CallbackQuery.Data == "DailyPositiveDialog.Picture")
             {
                 var recordVoiceMessage = "Загрузи фотографию, которая напомнит тебе об эмоциях сегодняшнего дня. " +
-                                         "\nЭто может быть фото сертификата, скриншот отзыва или любая деталь, важная для тебя в моменте.";
+                                         "\nЭто может быть фото сертификата, скриншот отзыва или любая деталь, важная для тебя в моменте." +
+                                         "\n \nСначала нажми на скрепку и загрузи фото, а затем нажми на кнопку “Сохранить и закончить”";
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: recordVoiceMessage,

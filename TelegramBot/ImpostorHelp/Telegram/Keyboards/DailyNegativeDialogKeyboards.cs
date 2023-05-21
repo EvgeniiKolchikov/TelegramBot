@@ -52,7 +52,7 @@ public static class DailyNegativeDialogKeyboards
         },
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "Поддержите меня!", callbackData: "DailyNegativeDialog.Yes.SupportMe")
+            InlineKeyboardButton.WithCallbackData(text: "Поддержи меня!", callbackData: "DailyNegativeDialog.Yes.SupportMe")
         }
     });
     
@@ -128,7 +128,7 @@ public static class DailyNegativeDialogKeyboards
         },
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "Как я могу позаботиться о себе сам?", callbackData: "DailyNegativeDialog.SelfHelp")
+            InlineKeyboardButton.WithCallbackData(text: "Как я могу позаботиться о себе сам(а)?", callbackData: "DailyNegativeDialog.SelfHelp")
         },
         new []
         {
@@ -144,7 +144,7 @@ public static class DailyNegativeDialogKeyboards
         },
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "Как я могу позаботиться о себе сам?", callbackData: "DailyNegativeDialog.SelfHelp")
+            InlineKeyboardButton.WithCallbackData(text: "Как я могу позаботиться о себе сам(а)?", callbackData: "DailyNegativeDialog.SelfHelp")
         },
         new []
         {

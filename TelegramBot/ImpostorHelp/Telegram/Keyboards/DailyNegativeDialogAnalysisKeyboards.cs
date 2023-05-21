@@ -24,11 +24,11 @@ public static class DailyNegativeDialogAnalysisKeyboards
     {
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "Прочитав, я вижу: в тексте только факты. Ай, да я! :)", callbackData: "DailyNegativeDialog.5Level.1-3.Facts")
+            InlineKeyboardButton.WithCallbackData(text: "Только факты! Ай да я!", callbackData: "DailyNegativeDialog.5Level.1-3.Facts")
         },
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "Вижу в тексте оценки, поправил(а) текст", callbackData: "DailyNegativeDialog.5Level.1-3.Fix")
+            InlineKeyboardButton.WithCallbackData(text: "Поправил(а) текст: долой оценки!", callbackData: "DailyNegativeDialog.5Level.1-3.Fix")
         }
     });
     
@@ -87,7 +87,7 @@ public static class DailyNegativeDialogAnalysisKeyboards
     {
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "Способы,которыми я могу позаботиться о себе", callbackData: "DailyNegativeDialog.SelfHelp")
+            InlineKeyboardButton.WithCallbackData(text: "Как я могу позаботиться о себе сам(а)?", callbackData: "DailyNegativeDialog.SelfHelp")
         },
         new []
         {

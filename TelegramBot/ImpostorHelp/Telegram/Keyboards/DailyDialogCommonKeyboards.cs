@@ -8,8 +8,8 @@ public static class DailyDialogCommonKeyboards
     {
         new []
         {
-            InlineKeyboardButton.WithCallbackData(text: "Умницей", callbackData: "DailyPositiveDialog.1Level"),
-            InlineKeyboardButton.WithCallbackData(text: "Самозванцем", callbackData: "DailyNegativeDialog.1Level")
+            InlineKeyboardButton.WithCallbackData(text: "Я скорее умница!", callbackData: "DailyPositiveDialog.1Level"),
+            InlineKeyboardButton.WithCallbackData(text: "Чувствую себя самозванцем :(", callbackData: "DailyNegativeDialog.1Level")
         },
     });
 }

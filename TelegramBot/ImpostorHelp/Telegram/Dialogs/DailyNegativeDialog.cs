@@ -214,7 +214,9 @@ public class DailyNegativeDialog
             else if (update.CallbackQuery.Data.Contains("DailyNegativeDialog.2Level.8-10"))
             {
                 var message =
-                    " Люди, подверженные Синдрому самозванца часто склонны преувеличивать ужас неудач.\n Дай себе минутку на размышление: может быть ты переоцениваешь своё состояние? 😉 \n Итак, сегодня ты страдал от синдрома самозванца на...";
+                    " Люди, подверженные Синдрому самозванца, часто склонны преувеличивать ужас неудач." +
+                    "\n Дай себе минутку на размышление: может быть ты переоцениваешь своё состояние? 😉 " +
+                    "\n Итак, сегодня ты страдал от синдрома самозванца на...";
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: message,
@@ -234,7 +236,7 @@ public class DailyNegativeDialog
                 );
 
                 var rnd = new Random();
-                var number = rnd.Next(1, 4);
+                var number = rnd.Next(1, 5);
                 switch (number)
                 {
                     case 1: await _supportHandler.GetImageSupport(botClient, update, cancellationToken);
@@ -242,6 +244,9 @@ public class DailyNegativeDialog
                     case 2: await _supportHandler.GetTextSupport(botClient, update, cancellationToken);
                         break;
                     case 3: await _supportHandler.GetVoiceSupport(botClient, update, cancellationToken);
+                        break;
+                    case 4:
+                        await _supportHandler.GetSupportFactsText(botClient, update, cancellationToken);
                         break;
                 }
 
@@ -331,7 +336,6 @@ public class DailyNegativeDialog
             {
                 var message =
                     " Возможно сейчас я не в силах помочь тебе так, как это необходимо. Но я уверен, что ты можешь обратиться к другим своим ресурсам. " +
-                    "ДАЛЕЕ ИДЁТ МИКРО-НАНО-СТАТЕЙКА (текст ниже)" +
                     "\n \nДо завтра!";
                 var message1 =
                     "Я опросил опытных психологов (и Интернет). Вот что они рекомендуют для эмоциональной самоподдержки:" +

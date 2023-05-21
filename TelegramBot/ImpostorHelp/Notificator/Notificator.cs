@@ -30,13 +30,12 @@ public class Notificator
         while (true)
         {
             _now = DateTime.UtcNow + TimeSpan.FromHours(3);
-            Console.WriteLine(_now);
             var res = await _db.Chats.Where(c => c.NotificationTime.Hour == _now.Hour
                                                  && c.NotificationTime.Minute == _now.Minute)
                 .Select(c => c.ChatId).ToListAsync();
             foreach (var chatId in res)
             {
-                var welcomeMessage = "Кем Вы сегодня были - самозванцем или  умницей?";
+                var welcomeMessage = "Привет! Поделись, как ты себя ощущаешь сегодня? Скорее как самозванец или как умница?";
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: welcomeMessage,
